@@ -361,6 +361,27 @@ class NiuApiTest(unittest.TestCase):
                 with self.assertRaises(api_module.NiuVehicleNotFoundError):
                     self.api.initialize()
 
+    def test_initialize_accepts_vehicle_without_name(self) -> None:
+        """An optional display name must not prevent vehicle setup."""
+        api_module.requests.post.return_value = token_response("access")
+
+        for vehicle in (
+            {"sn_id": "TEST-SN"},
+            {"sn_id": "TEST-SN", "scooter_name": None},
+            {"sn_id": "TEST-SN", "scooter_name": ""},
+            {"sn_id": "TEST-SN", "scooter_name": "   "},
+        ):
+            with self.subTest(vehicle=vehicle):
+                api_module.requests.get.return_value = FakeResponse(
+                    200, {"status": 0, "data": {"items": [vehicle]}}
+                )
+                api = api_module.NiuApi("user@example.com", "secret", 0)
+
+                api.initialize()
+
+                self.assertEqual(api.sn, "TEST-SN")
+                self.assertEqual(api.sensor_prefix, "Unnamed vehicle")
+
     def test_get_vehicles_info_sends_overseas_locale_headers(self) -> None:
         """The vehicle list request must carry the caller's locale."""
         self.set_authenticated()

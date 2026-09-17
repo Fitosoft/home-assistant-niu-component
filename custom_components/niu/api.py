@@ -142,14 +142,15 @@ class NiuApi:
         try:
             vehicle = items[self.scooter_id]
             sn = vehicle["sn_id"]
-            scooter_name = vehicle["scooter_name"]
         except (KeyError, TypeError) as err:
             raise NiuResponseError("NIU vehicle list has an unexpected format") from err
-        if not sn or not scooter_name:
+        if not sn:
             raise NiuResponseError("NIU vehicle list has an unexpected format")
 
         self.sn = str(sn)
-        self.sensor_prefix = str(scooter_name)
+        self.sensor_prefix = (
+            str(vehicle.get("scooter_name") or "").strip() or "Unnamed vehicle"
+        )
 
     def get_token(self):
         """Authenticate with username and password and return an access token."""
