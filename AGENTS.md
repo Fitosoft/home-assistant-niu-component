@@ -1,17 +1,17 @@
 # Development workflow: strict TDD
 
-## Local-only instructions
+## Instructions stored in the personal fork only
 
-This file must stay local for now. Save it in the local Git branch
-`local/vibe-coding` of the personal fork checkout. Do not push that branch to
-GitHub, including the personal fork, unless the user changes this rule.
+Save this file on `local/vibe-coding` and push that branch to the personal fork,
+`Fitosoft/home-assistant-niu-component`. It must never reach the upstream
+repository, `marcelwestrahome/home-assistant-niu-component`.
 
 On development and release branches, keep `AGENTS.md` as a locally ignored,
-untracked file. Never stage or commit it on a branch that may be pushed. Use
+untracked file. Never stage or commit it on a development or release branch. Use
 the local `.git/info/exclude`, not the shared `.gitignore`, for this exclusion.
 Do not merge or cherry-pick commits from `local/vibe-coding` into other branches.
-When these instructions change, update the local instruction branch and the
-local copies in active worktrees. Local push protection is a safeguard, not a
+When these instructions change, update the instruction branch in the personal
+fork and the local copies in active worktrees. Local push protection is a safeguard, not a
 replacement for checking the outgoing commits and files before a push.
 
 For every behavioral change or bug fix:
